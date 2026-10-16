@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart | Elite Office Technologies</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages/cart.css">
+</head>
+<body>
+  <site-header></site-header>
+
+  <main class="container cart-page">
+    <h1 style="margin-bottom: 2rem;">Shopping Cart</h1>
+
+    <div id="cart-content" class="cart-layout" style="display:none;">
+      <div class="cart-items" id="cart-items-container">
+        <!-- Rendered by JS -->
+      </div>
+
+      <div class="cart-summary">
+        <h3 style="margin-bottom: 1.5rem;">Order Summary</h3>
+        
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span id="summary-subtotal">₹0.00</span>
+        </div>
+        
+        <div class="summary-row">
+          <span>Tax (18% GST Estimated)</span>
+          <span id="summary-tax">₹0.00</span>
+        </div>
+        
+        <div class="summary-row summary-total">
+          <span>Total</span>
+          <span id="summary-total">₹0.00</span>
+        </div>
+
+        <a href="/checkout.html" class="btn btn-primary" style="width: 100%; display:block; margin-top:1.5rem; text-align:center;">Proceed to Checkout</a>
+        <a href="/products.html" style="display:block; text-align:center; margin-top:1rem; color:var(--color-text-muted);">Continue Shopping</a>
+      </div>
+    </div>
+
+    <div id="empty-cart" class="empty-cart" style="display:none;">
+      <div style="font-size: 4rem; margin-bottom: 1rem;">🛒</div>
+      <h2>Your cart is empty</h2>
+      <p style="color:var(--color-text-muted); margin-bottom: 2rem;">Looks like you haven't added any items to your cart yet.</p>
+      <a href="/products.html" class="btn btn-primary">Start Shopping</a>
+    </div>
+
+  </main>
+
+  <site-footer></site-footer>
+
+  <!-- Shared JS -->
+  <script src="/js/config.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/cart.js"></script>
+  <script src="/js/components/header.js"></script>
+  <script src="/js/components/footer.js"></script>
+  <script src="/js/components/toast.js"></script>
+  
+  <!-- Page JS -->
+  <script src="/js/pages/cart-page.js"></script>
+</body>
+</html>

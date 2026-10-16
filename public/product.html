@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details | Elite Office Technologies</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages/product-detail.css">
+</head>
+<body>
+  <site-header></site-header>
+
+  <main class="container" style="padding-top: 2rem; padding-bottom: 4rem;">
+    <div id="breadcrumb" style="margin-bottom: 1rem; color: var(--color-text-muted);">
+      <a href="/">Home</a> &gt; <a href="/products.html">Products</a> &gt; <span id="bc-category"></span> &gt; <span id="bc-name"></span>
+    </div>
+
+    <div id="loading-state" style="text-align:center; padding: 4rem;">Loading product details...</div>
+    <div id="error-state" style="display:none; text-align:center; padding: 4rem; color: var(--color-error);">Product not found.</div>
+
+    <div id="product-content" class="product-detail-layout" style="display:none;">
+      <!-- Gallery -->
+      <div class="gallery">
+        <div class="gallery-main" style="position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #fff; aspect-ratio: 1/1; border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+          <img id="main-image" src="" alt="Product Image" style="max-height: 100%; max-width: 100%; object-fit: contain;">
+          <button id="slider-prev" style="display:none; position:absolute; left:10px; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.5); color:#fff; border:none; padding:10px; cursor:pointer; border-radius:50%; width: 40px; height: 40px; font-size: 16px;">❮</button>
+          <button id="slider-next" style="display:none; position:absolute; right:10px; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.5); color:#fff; border:none; padding:10px; cursor:pointer; border-radius:50%; width: 40px; height: 40px; font-size: 16px;">❯</button>
+          <div id="slider-indicators" style="position:absolute; bottom:15px; left:50%; transform:translateX(-50%); display:flex; gap:8px;"></div>
+        </div>
+        <div class="gallery-thumbnails" id="thumbnail-container">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Info -->
+      <div class="product-info">
+        <div id="stock-badge" class="badge"></div>
+        <h1 id="product-title"></h1>
+        
+        <div style="display:flex; align-items:baseline; gap: 1rem;">
+          <div id="product-price" class="product-price-large"></div>
+          <div id="compare-price" style="text-decoration:line-through; color:var(--color-text-muted);"></div>
+        </div>
+
+        <div id="product-desc" class="description-block"></div>
+
+        <div class="quantity-selector">
+          <label class="form-label" style="margin:0;">Quantity:</label>
+          <button class="qty-btn" id="qty-minus">-</button>
+          <input type="number" id="qty-input" class="qty-input" value="1" min="1">
+          <button class="qty-btn" id="qty-plus">+</button>
+        </div>
+
+        <div class="action-buttons">
+          <button id="add-to-cart-btn" class="btn btn-primary">Add to Cart</button>
+          <button id="wa-enquiry-btn" class="btn btn-secondary">WhatsApp Enquiry</button>
+        </div>
+
+        <div style="margin-top: 3rem;">
+          <h3 style="border-bottom: 2px solid var(--color-primary); padding-bottom: 0.5rem; display:inline-block;">Specifications</h3>
+          <table class="specs-table" id="specs-table">
+            <tbody>
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <section id="related-section" style="display:none; margin-top: 4rem;">
+      <h2 style="text-align:center; margin-bottom: 2rem;">Related Products</h2>
+      <div class="grid grid-4" id="related-products">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+  </main>
+
+  <site-footer></site-footer>
+
+  <!-- Shared JS -->
+  <script src="/js/config.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/cart.js"></script>
+  <script src="/js/components/header.js"></script>
+  <script src="/js/components/footer.js"></script>
+  <script src="/js/components/productCard.js"></script>
+  <script src="/js/components/toast.js"></script>
+  <script src="/js/components/whatsapp.js"></script>
+  
+  <!-- Page JS -->
+  <script src="/js/pages/product-detail.js"></script>
+</body>
+</html>

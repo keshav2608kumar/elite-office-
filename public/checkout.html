@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | Elite Office Technologies</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages/checkout.css">
+</head>
+<body>
+  <site-header></site-header>
+
+  <main class="container">
+    <h1 style="margin-top: 2rem;">Checkout</h1>
+
+    <div class="checkout-layout">
+      <div class="checkout-forms">
+        <form id="checkout-form">
+          <div class="checkout-section">
+            <h2>Contact Information</h2>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="firstName">First Name</label>
+                <input type="text" id="firstName" name="firstName" class="form-control" required>
+                <div class="error-text">First name is required</div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="lastName">Last Name</label>
+                <input type="text" id="lastName" name="lastName" class="form-control" required>
+                <div class="error-text">Last name is required</div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="email">Email</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+                <div class="error-text">Valid email is required</div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" class="form-control" pattern="[0-9]{10}" title="10 digit mobile number" required>
+                <div class="error-text">Valid 10-digit phone number is required</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="checkout-section">
+            <h2>Shipping Address</h2>
+            <div class="form-group">
+              <label class="form-label" for="address">Street Address</label>
+              <input type="text" id="address" name="address" class="form-control" required>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="city">City</label>
+                <input type="text" id="city" name="city" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="state">State</label>
+                <input type="text" id="state" name="state" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="pincode">Pincode</label>
+                <input type="text" id="pincode" name="pincode" class="form-control" pattern="[0-9]{6}" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="checkout-section">
+            <h2>Payment Method</h2>
+            <div class="payment-methods">
+              <label class="payment-method">
+                <input type="radio" name="paymentMethod" value="razorpay" checked>
+                <div>
+                  <strong>Pay Online</strong>
+                  <div style="font-size:0.875rem; color:var(--color-text-muted);">Credit/Debit Card, NetBanking, UPI</div>
+                </div>
+              </label>
+              <label class="payment-method">
+                <input type="radio" name="paymentMethod" value="cod">
+                <div>
+                  <strong>Cash on Delivery (COD)</strong>
+                  <div style="font-size:0.875rem; color:var(--color-text-muted);">Pay when you receive the order</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="place-order-btn" style="width:100%; font-size:1.1rem; padding:1rem;">Place Order</button>
+        </form>
+      </div>
+
+      <aside class="order-summary-sidebar">
+        <h3 style="margin-bottom: 1rem;">Order Summary</h3>
+        <div id="checkout-items">
+          <!-- Populated by JS -->
+          <div style="text-align:center;">Loading cart...</div>
+        </div>
+        
+        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--color-border);">
+          <div style="display:flex; justify-content:space-between; margin-bottom: 0.5rem;">
+            <span>Subtotal</span>
+            <span id="co-subtotal">₹0.00</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-bottom: 0.5rem;">
+            <span>Tax (18% GST)</span>
+            <span id="co-tax">₹0.00</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-weight:700; font-size:1.2rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--color-border);">
+            <span>Total</span>
+            <span id="co-total">₹0.00</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <site-footer></site-footer>
+
+  <!-- Razorpay -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <!-- Shared JS -->
+  <script src="/js/config.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/cart.js"></script>
+  <script src="/js/components/header.js"></script>
+  <script src="/js/components/footer.js"></script>
+  <script src="/js/components/toast.js"></script>
+  
+  <!-- Page JS -->
+  <script src="/js/pages/checkout.js"></script>
+</body>
+</html>

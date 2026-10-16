@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track Order | Elite Office Technologies</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <style>
+    .track-container { max-width: 600px; margin: 4rem auto; background: white; padding: 3rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .status-timeline { margin-top: 2rem; padding: 2rem; background: var(--color-bg); border-radius: var(--radius-sm); }
+    .timeline-item { padding-bottom: 1.5rem; border-left: 2px solid var(--color-primary); padding-left: 1.5rem; position: relative; }
+    .timeline-item::before { content: ''; position: absolute; left: -8px; top: 0; width: 14px; height: 14px; border-radius: 50%; background: var(--color-primary); }
+    .timeline-item:last-child { border-left: none; }
+  </style>
+</head>
+<body>
+  <site-header></site-header>
+  
+  <main class="container">
+    <div class="track-container">
+      <h1 style="text-align:center; margin-bottom: 1rem;">Track Your Order</h1>
+      <p style="text-align:center; color:var(--color-text-muted); margin-bottom: 2rem;">Enter your order number and email address to check the status.</p>
+      
+      <form id="trackForm">
+        <div class="form-group">
+          <label class="form-label">Order Number</label>
+          <input type="text" name="orderNumber" class="form-control" required placeholder="e.g. ORD-123456">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" name="email" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary" id="track-btn" style="width: 100%;">Track Order</button>
+      </form>
+
+      <div id="result-container" style="display:none; margin-top: 3rem;">
+        <h3 style="border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem;">Order Details</h3>
+        <p style="margin-top: 1rem;"><strong>Order:</strong> <span id="r-order"></span></p>
+        <p><strong>Date:</strong> <span id="r-date"></span></p>
+        <p><strong>Total:</strong> <span id="r-total"></span></p>
+        
+        <div class="status-timeline" id="timeline">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <site-footer></site-footer>
+  
+  <script src="/js/config.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/cart.js"></script>
+  <script src="/js/components/header.js"></script>
+  <script src="/js/components/footer.js"></script>
+  <script src="/js/components/toast.js"></script>
+
+  <script>
+    document.getElementById('trackForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('track-btn');
+      btn.disabled = true;
+      btn.textContent = 'Searching...';
+      
+      const orderNumber = e.target.orderNumber.value.trim();
+      const email = e.target.email.value.trim();
+      
+      try {
+        const order = await window.api.get(`/orders/${orderNumber}?email=${encodeURIComponent(email)}`);
+        
+        document.getElementById('result-container').style.display = 'block';
+        document.getElementById('r-order').textContent = order.orderNumber;
+        document.getElementById('r-date').textContent = window.Utils.formatDate(order.createdAt);
+        document.getElementById('r-total').textContent = window.Utils.formatPrice(order.totalAmount);
+        
+        const timeline = document.getElementById('timeline');
+        timeline.innerHTML = '';
+        
+        const item = document.createElement('div');
+        item.className = 'timeline-item';
+        item.innerHTML = `<strong>Current Status: ${order.status}</strong><br><span style="font-size:0.875rem; color:var(--color-text-muted);">Updated on ${window.Utils.formatDate(order.updatedAt)}</span>`;
+        timeline.appendChild(item);
+        
+      } catch (err) {
+        document.getElementById('result-container').style.display = 'none';
+        window.showToast(err.message || 'Order not found', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Track Order';
+      }
+    });
+  </script>
+</body>
+</html>

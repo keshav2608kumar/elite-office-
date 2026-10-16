@@ -1,0 +1,103 @@
+/* Products Page */
+.products-page { padding: 32px 0; }
+
+.products-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .products-layout { grid-template-columns: 1fr; }
+  .filters-sidebar { display: none; }
+  .filters-sidebar.open { display: block; }
+}
+
+/* Sidebar */
+.filters-sidebar {
+  position: sticky;
+  top: 100px;
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.filter-group { margin-bottom: 24px; }
+.filter-group:last-child { margin-bottom: 0; }
+.filter-title {
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--primary-brand);
+}
+
+/* Category/Brand Pills */
+.category-pill {
+  padding: 8px 16px;
+  border-radius: 9999px;
+  background: #fff;
+  border: 1px solid var(--border-color);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 8px;
+  display: inline-block;
+}
+.category-pill:hover { border-color: var(--accent-color); color: var(--accent-color); }
+.category-pill.active {
+  background: var(--accent-color);
+  color: var(--primary-brand);
+  border-color: var(--accent-color);
+  font-weight: 600;
+}
+
+/* Products Header */
+.products-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.search-bar {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+  max-width: 400px;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 10px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-family: var(--font-body);
+  transition: border-color 0.2s;
+}
+.search-bar input:focus {
+  border-color: var(--accent-color);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(201,168,76,0.2);
+}
+
+.sort-dropdown {
+  padding: 10px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-family: var(--font-body);
+  background: #fff;
+  cursor: pointer;
+}
+.sort-dropdown:focus {
+  border-color: var(--accent-color);
+  outline: none;
+}
+

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products | Elite Office Technologies</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages/products.css">
+</head>
+<body>
+  <site-header></site-header>
+
+  <main class="products-page container">
+    <div style="margin-bottom: 1rem; color: var(--color-text-muted);">
+      <a href="/">Home</a> &gt; <span>Products</span>
+    </div>
+
+    <div class="products-layout">
+      <!-- Sidebar -->
+      <aside class="filters-sidebar">
+        <div class="filter-group">
+          <h3 class="filter-title">Categories</h3>
+          <div id="category-list">
+            <div class="category-pill active" data-category="">All Products</div>
+            <!-- Populated by JS -->
+          </div>
+        </div>
+        
+        <div class="filter-group">
+          <h3 class="filter-title">Brands</h3>
+          <div id="brand-list">
+            <div class="category-pill active" data-brand="">All Brands</div>
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <div>
+        <div class="products-header">
+          <div class="search-bar">
+            <input type="text" id="search-input" class="form-control" placeholder="Search products...">
+            <button class="btn btn-primary" id="search-btn">🔍</button>
+          </div>
+          
+          <select id="sort-select" class="sort-dropdown">
+            <option value="">Newest</option>
+            <option value="price">Price: Low to High</option>
+            <option value="-price">Price: High to Low</option>
+            <option value="name">Name: A to Z</option>
+          </select>
+        </div>
+
+        <div id="products-grid" class="grid grid-3">
+          <!-- Populated by JS -->
+          <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">Loading products...</div>
+        </div>
+
+        <div id="pagination" class="pagination">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <site-footer></site-footer>
+
+  <!-- Shared JS -->
+  <script src="/js/config.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/cart.js"></script>
+  <script src="/js/components/header.js"></script>
+  <script src="/js/components/footer.js"></script>
+  <script src="/js/components/productCard.js"></script>
+  <script src="/js/components/toast.js"></script>
+  <script src="/js/components/whatsapp.js"></script>
+  
+  <!-- Page JS -->
+  <script src="/js/pages/products.js"></script>
+</body>
+</html>

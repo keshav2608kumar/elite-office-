@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us | Elite Office Technologies</title>
+  <meta name="description" content="Get in touch with Elite Office Technologies for your business IT and stationery needs.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages/contact.css">
+</head>
+<body>
+  <site-header></site-header>
+  
+  <main class="container">
+    <div class="contact-header">
+      <h1>Contact Us</h1>
+      <p>We're here to help with your office technology needs. Reach out for product inquiries, bulk orders, or support.</p>
+    </div>
+    
+    <div class="contact-wrapper">
+      <!-- Business Info Card -->
+      <div class="contact-info-card">
+        <h3>Elite Office Technologies</h3>
+        
+        <div class="info-item">
+          <div class="info-icon">📍</div>
+          <div class="info-content">
+            <h4>Office Address</h4>
+            <p>Shop No 4, No 30, BEML Main Road,<br>New Thippasandra, Jeevan Bima Nagar,<br>Bengaluru, Karnataka - 560075</p>
+          </div>
+        </div>
+        
+        <div class="info-item">
+          <div class="info-icon">📞</div>
+          <div class="info-content">
+            <h4>Contact Numbers</h4>
+            <p>Landline: 080 45256229</p>
+            <p>WhatsApp: +91 9167711966</p>
+            <p>Contact Person: Rishikesh Rai</p>
+          </div>
+        </div>
+        
+        <div class="info-item">
+          <div class="info-icon">✉️</div>
+          <div class="info-content">
+            <h4>Email</h4>
+            <p>info@eliteoffice.com</p>
+          </div>
+        </div>
+        
+        <div class="info-item">
+          <div class="info-icon">⏰</div>
+          <div class="info-content">
+            <h4>Business Hours</h4>
+            <p>24 X 7</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Contact Form Card -->
+      <div class="contact-form-card">
+        <form id="contactForm">
+          <div class="floating-group">
+            <input type="text" id="name" name="name" required placeholder=" ">
+            <label for="name">Your Name</label>
+          </div>
+          
+          <div class="floating-group">
+            <input type="email" id="email" name="email" required placeholder=" ">
+            <label for="email">Email Address</label>
+          </div>
+          
+          <div class="floating-group">
+            <input type="tel" id="phone" name="phone" required placeholder=" " pattern="[0-9]{10,12}">
+            <label for="phone">Phone Number</label>
+          </div>
+          
+          <div class="floating-group">
+            <input type="text" id="subject" name="subject" required placeholder=" ">
+            <label for="subject">Subject</label>
+          </div>
+          
+          <div class="floating-group">
+            <textarea id="message" name="message" required placeholder=" "></textarea>
+            <label for="message">Your Message</label>
+          </div>
+          
+          <button type="submit" class="btn btn-primary submit-btn" id="submit-btn">
+            Send via WhatsApp 
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c-.003 1.396.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.004-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/></svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+  
+  <site-footer></site-footer>
+  
+  <script src="/js/config.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/cart.js"></script>
+  <script src="/js/components/header.js"></script>
+  <script src="/js/components/footer.js"></script>
+  <script src="/js/components/toast.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('contactForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('submit-btn');
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.textContent = 'Preparing...';
+        
+        const fd = new FormData(e.target);
+        const data = Object.fromEntries(fd.entries());
+        
+        try {
+          // Construct WhatsApp Message synchronously
+          const waNumber = '919167711966'; // Using the business number provided
+          const waMessage = `Hello Elite Office Technologies,
+
+Name: ${data.name}
+Email: ${data.email}
+Phone: ${data.phone}
+Subject: ${data.subject}
+
+Message:
+${data.message}`;
+
+          const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(waMessage)}`;
+          
+          window.showToast('Redirecting to WhatsApp...', 'success');
+          
+          // Fire and forget the backend record keeping
+          window.api.post('/contact', data).catch(err => console.error('Failed to log contact', err));
+          
+          // Redirect immediately so popup blockers don't intercept it
+          window.location.href = waUrl;
+          
+          e.target.reset();
+        } catch(err) {
+          console.error(err);
+          window.showToast('An error occurred. Please try again.', 'error');
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = originalText;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

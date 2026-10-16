@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us | Elite Office Technologies</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <style>
+    .about-header { text-align: center; padding: 4rem 0; background-color: var(--color-bg); }
+    .about-content { max-width: 800px; margin: 4rem auto; }
+    .about-content p { font-size: 1.1rem; margin-bottom: 1.5rem; color: var(--color-text-muted); }
+    .values-grid { display: grid; gap: 2rem; margin: 4rem 0; }
+    @media(min-width: 768px) { .values-grid { grid-template-columns: 1fr 1fr; } }
+    .value-card { padding: 2rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); }
+  </style>
+</head>
+<body>
+  <site-header></site-header>
+  
+  <div class="about-header">
+    <div class="container">
+      <h1>About Elite Office Technologies</h1>
+      <p style="font-size:1.2rem; max-width:600px; margin:0 auto; color:var(--color-text-muted);">Empowering businesses with reliable IT hardware, printing solutions, and premium office stationery.</p>
+    </div>
+  </div>
+
+  <main class="container">
+    <div class="about-content">
+      <h2 style="text-align:center; margin-bottom: 2rem;">Our Story</h2>
+      <p>At Elite Office Technologies, we understand that a well-equipped office is the foundation of a successful business. Founded with the vision to provide end-to-end office solutions under one roof, we have grown to become a trusted partner for numerous organizations.</p>
+      <p>We specialize in a comprehensive range of products, including high-performance IT equipment, efficient printing solutions, and everyday office stationery. Our goal is to simplify procurement for businesses, offering quality products backed by exceptional service and support.</p>
+      
+      <div class="values-grid">
+        <div class="value-card">
+          <h3 style="color:var(--color-secondary);">Quality Products</h3>
+          <p style="font-size:1rem; margin:0;">We partner with leading brands to ensure that every product we supply meets the highest standards of durability and performance.</p>
+        </div>
+        <div class="value-card">
+          <h3 style="color:var(--color-secondary);">Customer First</h3>
+          <p style="font-size:1rem; margin:0;">Your satisfaction is our priority. Our dedicated team is always ready to assist you in finding the right solutions for your specific needs.</p>
+        </div>
+        <div class="value-card">
+          <h3 style="color:var(--color-secondary);">Reliable Service</h3>
+          <p style="font-size:1rem; margin:0;">From prompt deliveries to expert technical support, we are committed to keeping your business operations running smoothly.</p>
+        </div>
+        <div class="value-card">
+          <h3 style="color:var(--color-secondary);">Innovation</h3>
+          <p style="font-size:1rem; margin:0;">We constantly update our inventory with the latest technology trends to help your business stay ahead of the curve.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <site-footer></site-footer>
+  
+  <script src="/js/config.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/cart.js"></script>
+  <script src="/js/components/header.js"></script>
+  <script src="/js/components/footer.js"></script>
+  <script src="/js/components/whatsapp.js"></script>
+</body>
+</html>

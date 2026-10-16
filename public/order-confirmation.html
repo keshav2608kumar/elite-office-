@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Confirmation | Elite Office Technologies</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <style>
+    .confirmation-container {
+      max-width: 600px;
+      margin: 4rem auto;
+      text-align: center;
+      background-color: var(--color-white);
+      padding: 3rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+    }
+    .success-icon {
+      font-size: 5rem;
+      color: var(--color-success);
+      margin-bottom: 1rem;
+    }
+    .order-details-box {
+      background-color: var(--color-bg);
+      padding: 1.5rem;
+      border-radius: var(--radius-md);
+      margin: 2rem 0;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <site-header></site-header>
+
+  <main class="container">
+    <div class="confirmation-container">
+      <div class="success-icon">✓</div>
+      <h1>Order Confirmed!</h1>
+      <p>Thank you for shopping with Elite Office Technologies.</p>
+      
+      <div class="order-details-box" id="order-box" style="display:none;">
+        <h3 style="margin-bottom: 1rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem;">Order Details</h3>
+        <p><strong>Order Number:</strong> <span id="conf-order-num"></span></p>
+        <p><strong>Status:</strong> <span id="conf-status"></span></p>
+        <p><strong>Total Amount:</strong> <span id="conf-total"></span></p>
+        <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--color-text-muted);">
+          A confirmation email has been sent to your registered email address.
+        </p>
+      </div>
+
+      <div id="loading" style="margin: 2rem 0;">Loading details...</div>
+
+      <a href="/products.html" class="btn btn-primary">Continue Shopping</a>
+      <a href="/track-order.html" class="btn btn-outline" style="margin-left: 1rem;">Track Order</a>
+    </div>
+  </main>
+
+  <site-footer></site-footer>
+
+  <!-- Shared JS -->
+  <script src="/js/config.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/cart.js"></script>
+  <script src="/js/components/header.js"></script>
+  <script src="/js/components/footer.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const params = new URLSearchParams(window.location.search);
+      const orderNum = params.get('order');
+      const email = params.get('email');
+
+      if (!orderNum) {
+        document.getElementById('loading').textContent = 'Invalid order link.';
+        return;
+      }
+
+      try {
+        let url = `/orders/${orderNum}`;
+        if(email) url += `?email=${encodeURIComponent(email)}`;
+        
+        const order = await window.api.get(url);
+        
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('order-box').style.display = 'block';
+        
+        document.getElementById('conf-order-num').textContent = order.orderNumber;
+        document.getElementById('conf-status').textContent = order.status;
+        document.getElementById('conf-total').textContent = window.Utils.formatPrice(order.totalAmount);
+      } catch (err) {
+        document.getElementById('loading').textContent = 'Order placed successfully. Failed to load details.';
+      }
+    });
+  </script>
+</body>
+</html>

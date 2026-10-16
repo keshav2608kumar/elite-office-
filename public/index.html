@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elite Office Technologies | Your Trusted Partner</title>
+  <meta name="description" content="Elite Office Technologies offers quality IT, printing, and stationery products for businesses.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages/home.css">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg"></head>
+<body>
+  <site-header></site-header>
+
+  <main>
+    <!-- Dynamic Hero Banner Slider -->
+    <section class="hero-slider-wrapper" id="hero-slider-container">
+      <!-- Fallback Hero in case banners don't load -->
+      <div class="hero">
+        <div class="hero__pattern"></div>
+        <div class="container hero__content">
+          <h1 class="hero__title">Your Trusted Partner for <span style="color: var(--accent-color);">Office Technology</span> Solutions</h1>
+          <p class="hero__subtitle">Providing quality IT equipment, printing solutions & premium office stationery to empower your business across India.</p>
+          <div class="hero__actions">
+            <a href="/products.html" class="btn btn-secondary">Shop Now &rarr;</a>
+            <a href="/contact.html" class="btn btn-outline-light">Contact Us</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trust Indicators -->
+    <section class="trust section">
+      <div class="container trust__grid">
+        <div class="trust__item">
+          <div class="trust__icon">✓</div>
+          <div class="trust__number">500+</div>
+          <div class="trust__label">Happy Clients</div>
+        </div>
+        <div class="trust__item">
+          <div class="trust__icon">✓</div>
+          <div class="trust__number">10+</div>
+          <div class="trust__label">Years Experience</div>
+        </div>
+        <div class="trust__item">
+          <div class="trust__icon">✓</div>
+          <div class="trust__number">24/7</div>
+          <div class="trust__label">Support Available</div>
+        </div>
+        <div class="trust__item">
+          <div class="trust__icon">✓</div>
+          <div class="trust__number">1000+</div>
+          <div class="trust__label">Products Delivered</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="section" style="background: var(--background);">
+      <div class="container">
+        <div class="section-header">
+          <h2>Shop by Category</h2>
+          <p>Browse our comprehensive range of office technology products</p>
+        </div>
+        <div class="categories__grid">
+          <a href="/products.html?category=IT+%26+Office+Equipment" class="category-card" style="background: linear-gradient(135deg, #0a1628 0%, #1a2d4a 100%);">
+            <div class="category-card__overlay"></div>
+            <div style="position:relative; z-index:2; text-align:center;">
+              <div style="font-size:3.5rem; margin-bottom:16px;">💻</div>
+              <h3 class="category-card__name">IT & Office Equipment</h3>
+              <p style="color:rgba(255,255,255,0.7); margin-top:8px;">Laptops, desktops, networking & more</p>
+            </div>
+          </a>
+          <a href="/products.html?category=Printing" class="category-card" style="background: linear-gradient(135deg, #1a2d4a 0%, #0a1628 100%);">
+            <div class="category-card__overlay"></div>
+            <div style="position:relative; z-index:2; text-align:center;">
+              <div style="font-size:3.5rem; margin-bottom:16px;">🖨️</div>
+              <h3 class="category-card__name">Printing Solutions</h3>
+              <p style="color:rgba(255,255,255,0.7); margin-top:8px;">Printers, scanners, inks & toners</p>
+            </div>
+          </a>
+          <a href="/products.html?category=Stationery" class="category-card" style="background: linear-gradient(135deg, #0a1628 0%, #2a3d5a 100%);">
+            <div class="category-card__overlay"></div>
+            <div style="position:relative; z-index:2; text-align:center;">
+              <div style="font-size:3.5rem; margin-bottom:16px;">📎</div>
+              <h3 class="category-card__name">Stationery</h3>
+              <p style="color:rgba(255,255,255,0.7); margin-top:8px;">Files, paper, writing instruments & accessories</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Our Products</h2>
+          <p>Quality products from leading brands at competitive prices</p>
+        </div>
+        <div class="grid grid-4" id="featured-products">
+          <div style="text-align:center; grid-column: 1/-1; padding: 40px;">
+            <div class="spinner"></div>
+            <p style="color: var(--text-muted); margin-top: 16px;">Loading products...</p>
+          </div>
+        </div>
+        <div style="text-align: center; margin-top: 32px;">
+          <a href="/products.html" class="btn btn-primary" style="padding: 12px 32px;">View All Products &rarr;</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section class="section" style="background: var(--background);">
+      <div class="container">
+        <div class="section-header">
+          <h2>Our Services</h2>
+          <p>Complete office technology solutions under one roof</p>
+        </div>
+        <div class="services__grid">
+          <div class="service-card">
+            <div class="service-card__icon">💻</div>
+            <h4 class="service-card__title">Computer & IT Solutions</h4>
+            <p class="service-card__desc">Setup, maintenance, and troubleshooting for office computers and networks.</p>
+          </div>
+          <div class="service-card">
+            <div class="service-card__icon">🖨️</div>
+            <h4 class="service-card__title">Printer Solutions</h4>
+            <p class="service-card__desc">Sales, service, and AMC for all major printer brands.</p>
+          </div>
+          <div class="service-card">
+            <div class="service-card__icon">📠</div>
+            <h4 class="service-card__title">Office Equipment</h4>
+            <p class="service-card__desc">Supplying reliable copiers, scanners, and projectors.</p>
+          </div>
+          <div class="service-card">
+            <div class="service-card__icon">📑</div>
+            <h4 class="service-card__title">Printing Services</h4>
+            <p class="service-card__desc">Professional document printing and binding services.</p>
+          </div>
+          <div class="service-card">
+            <div class="service-card__icon">📎</div>
+            <h4 class="service-card__title">Stationery Supply</h4>
+            <p class="service-card__desc">Bulk supply of high-quality office stationery.</p>
+          </div>
+          <div class="service-card">
+            <div class="service-card__icon">⚙️</div>
+            <h4 class="service-card__title">Business Technology</h4>
+            <p class="service-card__desc">Consulting and implementation of tech solutions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>What Our Clients Say</h2>
+          <p>Trusted by businesses across India</p>
+        </div>
+        <div class="testimonials__grid" id="testimonials-grid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Brands Marquee -->
+    <section class="marquee-section">
+      <div class="container">
+        <div class="marquee__track" id="brand-marquee">
+          <span class="marquee-item">HP</span>
+          <span class="marquee-item">Canon</span>
+          <span class="marquee-item">Epson</span>
+          <span class="marquee-item">Dell</span>
+          <span class="marquee-item">Logitech</span>
+          <span class="marquee-item">Asus</span>
+          <span class="marquee-item">Parker</span>
+          <span class="marquee-item">HP</span>
+          <span class="marquee-item">Canon</span>
+          <span class="marquee-item">Epson</span>
+          <span class="marquee-item">Dell</span>
+          <span class="marquee-item">Logitech</span>
+          <span class="marquee-item">Asus</span>
+          <span class="marquee-item">Parker</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+      <div class="container">
+        <h2>Ready to upgrade your office?</h2>
+        <p>Contact our team for a custom quote or browse our catalog.</p>
+        <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+          <a href="/contact.html" class="btn btn-secondary">Get in Touch</a>
+          <a href="/products.html" class="btn btn-outline-light">Browse Products</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <site-footer></site-footer>
+
+  <!-- Shared JS -->
+  <script src="/js/config.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/cart.js"></script>
+  <script src="/js/components/header.js"></script>
+  <script src="/js/components/footer.js"></script>
+  <script src="/js/components/productCard.js"></script>
+  <script src="/js/components/toast.js"></script>
+  <script src="/js/components/whatsapp.js"></script>
+  
+  <!-- Page JS -->
+  <script src="/js/pages/home.js"></script>
+</body>
+</html>
