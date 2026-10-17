@@ -5,6 +5,8 @@ node_modules/
 .env
 .env.local
 .env.production
+ssl/
+*.pem
 
 # Uploads (user-generated content)
 uploads/

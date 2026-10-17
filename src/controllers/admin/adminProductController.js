@@ -112,7 +112,7 @@ exports.importProducts = asyncHandler(async (req, res, next) => {
   }
   
   try {
-    const workbook = xlsx.readFile(req.file.path);
+    const workbook = xlsx.readFile(req.file.path, { cellFormula: false, cellHTML: false, cellNF: false });
     const sheetName = workbook.SheetNames[0];
     const data = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);
     

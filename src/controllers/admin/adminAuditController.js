@@ -1,21 +1,27 @@
 const AuditLog = require('../../models/AuditLog');
 const asyncHandler = require('../../utils/asyncHandler');
-const ApiFeatures = require('../../utils/apiFeatures');
 
 exports.getAuditLogs = asyncHandler(async (req, res, next) => {
-  const features = new ApiFeatures(AuditLog.find().populate('adminId', 'username email'), req.query)
-    .filter()
-    .sort()
-    .limitFields()
-    .paginate();
+  const page = parseInt(req.query.page, 10) || 1;
+  const limit = parseInt(req.query.limit, 10) || 20;
+  const skip = (page - 1) * limit;
 
-  const logs = await features.query;
-  const total = await new ApiFeatures(AuditLog.find(), req.query).filter().query.countDocuments();
+  const filter = {};
+  if (req.query.action) {
+    filter.action = req.query.action;
+  }
+
+  const total = await AuditLog.countDocuments(filter);
+  const logs = await AuditLog.find(filter)
+    .populate('actor', 'username email role')
+    .sort({ timestamp: -1 })
+    .skip(skip)
+    .limit(limit);
 
   res.status(200).json({
     status: 'success',
     results: logs.length,
-    meta: { total, page: req.query.page * 1 || 1 },
+    meta: { total, page, totalPages: Math.ceil(total / limit) },
     data: { logs }
   });
 });

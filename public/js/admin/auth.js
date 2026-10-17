@@ -50,7 +50,7 @@ const AdminAuth = {
         } catch(e) {}
       }
       this.clear();
-      window.location.href = 'index.html';
+      window.location.href = '/admin/index.html';
     },
   
     clear() {
@@ -73,10 +73,10 @@ const AdminAuth = {
         try {
           await this.refresh();
         } catch (e) {
-          window.location.href = 'index.html';
+          window.location.href = '/admin/index.html';
         }
       } else if (!this.accessToken) {
-        window.location.href = 'index.html';
+        window.location.href = '/admin/index.html';
       }
     },
   

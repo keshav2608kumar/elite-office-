@@ -63,23 +63,20 @@ const errorHandler = (err, req, res, next) => {
     ip: req.ip
   });
 
-  if (process.env.NODE_ENV === 'development') {
-    sendErrorDev(err, res);
-  } else {
-    let error = { ...err };
-    error.message = err.message;
-    error.name = err.name;
-    
-    // Mongoose bad ObjectId
-    if (error.name === 'CastError') error = handleCastErrorDB(error);
-    // Mongoose duplicate key
-    if (error.code === 11000) error = handleDuplicateFieldsDB(error);
-    // Mongoose validation error
-    if (error.name === 'ValidationError') error = handleValidationErrorDB(error);
-    // JWT errors
-    if (error.name === 'JsonWebTokenError') error = handleJWTError();
-    if (error.name === 'TokenExpiredError') error = handleJWTExpiredError();
+  // Normalize operational errors
+  let error = err;
+  if (err.name === 'CastError') error = handleCastErrorDB(err);
+  else if (err.code === 11000) error = handleDuplicateFieldsDB(err);
+  else if (err.name === 'ValidationError') error = handleValidationErrorDB(err);
+  else if (err.name === 'JsonWebTokenError') error = handleJWTError();
+  else if (err.name === 'TokenExpiredError') error = handleJWTExpiredError();
 
+  error.statusCode = error.statusCode || 500;
+  error.status = error.status || 'error';
+
+  if (process.env.NODE_ENV === 'development') {
+    sendErrorDev(error, res);
+  } else {
     // Fallback for non-operational errors
     if (!error.isOperational) {
       error = new AppError(error.message, error.statusCode || 500);

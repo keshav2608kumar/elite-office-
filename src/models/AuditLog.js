@@ -6,12 +6,12 @@ const auditLogSchema = new mongoose.Schema({
     required: true,
     enum: [
       'admin_login', 'admin_login_failed', 'admin_logout', 
-      'product_create', 'product_update', 'product_delete', 
-      'order_status_change', 
-      'category_create', 'category_update', 'category_delete', 
-      'brand_create', 'brand_update', 'brand_delete', 
-      'testimonial_create', 'testimonial_update', 'testimonial_delete', 
-      'config_update', 'bulk_import', 'password_change'
+      'product_create', 'product_created', 'product_update', 'product_updated', 'product_delete', 'product_deleted', 'product_bulk_import',
+      'order_status_change', 'order_status_changed',
+      'category_create', 'category_created', 'category_update', 'category_updated', 'category_delete', 'category_deleted', 
+      'brand_create', 'brand_created', 'brand_update', 'brand_updated', 'brand_delete', 'brand_deleted', 
+      'testimonial_create', 'testimonial_created', 'testimonial_update', 'testimonial_updated', 'testimonial_delete', 'testimonial_deleted', 
+      'config_update', 'config_updated', 'bulk_import', 'password_change'
     ]
   },
   actor: {

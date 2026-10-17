@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Portal - Elite Office Technologies</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/components.css">
@@ -48,7 +50,7 @@
             if (AdminAuth.refreshToken) {
                 try {
                     await AdminAuth.refresh();
-                    window.location.href = 'dashboard.html';
+                    window.location.href = '/admin/dashboard.html';
                 } catch (e) {}
             }
 
@@ -83,7 +85,7 @@
                 
                 try {
                     await AdminAuth.login(email, password);
-                    window.location.href = 'dashboard.html';
+                    window.location.href = '/admin/dashboard.html';
                 } catch (err) {
                     errorDiv.textContent = err.message || 'Login failed. Please try again.';
                     errorDiv.classList.remove('hidden');

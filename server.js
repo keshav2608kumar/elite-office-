@@ -5,6 +5,8 @@ require('dotenv').config();
 
 const express = require('express');
 const path = require('path');
+const https = require('https');
+const fs = require('fs');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
 const cors = require('cors');
@@ -53,6 +55,20 @@ validateEnv();
 
 const app = express();
 
+// Trust proxy for reverse proxies (Nginx, Cloudflare, AWS, etc.)
+app.set('trust proxy', 1);
+
+// Enforce HTTPS in production
+app.use((req, res, next) => {
+  if (process.env.NODE_ENV === 'production') {
+    const isHttps = req.secure || req.headers['x-forwarded-proto'] === 'https';
+    if (!isHttps) {
+      return res.redirect(301, `https://${req.headers.host}${req.url}`);
+    }
+  }
+  next();
+});
+
 // ======================
 // SECURITY MIDDLEWARE
 // ======================
@@ -64,7 +80,7 @@ app.use(helmet({
       defaultSrc: ["'self'"],
       scriptSrc: ["'self'", "'unsafe-inline'", "https://checkout.razorpay.com", "https://fonts.googleapis.com"],
       styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com", "data:"],
       imgSrc: ["'self'", "data:", "https:", "blob:"],
       connectSrc: ["'self'", "https://api.razorpay.com", "https://lumberjack.razorpay.com"],
       frameSrc: ["https://api.razorpay.com", "https://checkout.razorpay.com"],
@@ -202,12 +218,35 @@ async function startServer() {
       console.log(`\n🚀 Elite Office Technologies Server`);
       console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
       console.log(`   Port: ${PORT}`);
-      console.log(`   URL: http://localhost:${PORT}\n`);
+      console.log(`   URL: http://localhost:${PORT}`);
     });
+
+    // Optional HTTPS server if certificates exist
+    let httpsServer = null;
+    const sslKeyPath = process.env.SSL_KEY_PATH || path.join(__dirname, 'ssl', 'key.pem');
+    const sslCertPath = process.env.SSL_CERT_PATH || path.join(__dirname, 'ssl', 'cert.pem');
+
+    if (fs.existsSync(sslKeyPath) && fs.existsSync(sslCertPath)) {
+      try {
+        const httpsOptions = {
+          key: fs.readFileSync(sslKeyPath),
+          cert: fs.readFileSync(sslCertPath)
+        };
+        const HTTPS_PORT = parseInt(process.env.HTTPS_PORT, 10) || 5443;
+        httpsServer = https.createServer(httpsOptions, app).listen(HTTPS_PORT, () => {
+          console.log(`   HTTPS: https://localhost:${HTTPS_PORT}\n`);
+        });
+      } catch (sslErr) {
+        console.warn(`⚠️ Failed to start HTTPS server: ${sslErr.message}`);
+      }
+    } else {
+      console.log(`   HTTPS: Ready (add ssl/key.pem and ssl/cert.pem to enable)\n`);
+    }
 
     // Graceful shutdown
     const shutdown = async (signal) => {
       console.log(`\n${signal} received. Shutting down gracefully...`);
+      if (httpsServer) httpsServer.close();
       server.close(async () => {
         try {
           await mongoose.connection.close();

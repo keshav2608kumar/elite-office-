@@ -12,7 +12,7 @@ const processProductImport = async (filePath) => {
       throw new Error('File size exceeds the 5MB limit.');
     }
 
-    const workbook = xlsx.readFile(filePath);
+    const workbook = xlsx.readFile(filePath, { cellFormula: false, cellHTML: false, cellNF: false });
     const sheetName = workbook.SheetNames[0];
     const sheet = workbook.Sheets[sheetName];
     const data = xlsx.utils.sheet_to_json(sheet);
