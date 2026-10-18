@@ -75,6 +75,8 @@ async function runTests() {
   // 2. Public / Customer Endpoints
   console.log('\n--- 2. Public & Customer Functional Endpoints ---');
   let sampleProduct = null;
+  let testOrderId = null;
+  let testOrderNumber = null;
   try {
     const config = await api('GET', '/api/config/public');
     assert(config.status === 200, 'GET /api/config/public returns 200');
@@ -111,6 +113,35 @@ async function runTests() {
         items: [{ productId: sampleProduct._id, quantity: 2 }]
       });
       assert(cartVal.status === 200 && cartVal.data.items?.length === 1, 'POST /api/cart/validate calculates server-side totals securely');
+    }
+
+    // Order Enquiry submission
+    if (sampleProduct) {
+      const orderEnquiry = await api('POST', '/api/orders', {
+        customer: {
+          name: 'Sharma Infotech',
+          company: 'Sharma Infotech Ltd',
+          email: 'sharma@example.com',
+          phone: '9876543210',
+          address: {
+            street: 'Sector 62, Electronic City',
+            city: 'Noida',
+            state: 'Uttar Pradesh',
+            pincode: '201301'
+          }
+        },
+        items: [{ productId: sampleProduct._id, quantity: 2 }],
+        notes: 'Urgent enquiry for office equipment.',
+        paymentMethod: 'enquiry'
+      });
+      assert(orderEnquiry.status === 201 && orderEnquiry.data.order?.orderNumber, 'POST /api/orders submits quotation enquiry successfully');
+      testOrderNumber = orderEnquiry.data.order?.orderNumber;
+      testOrderId = orderEnquiry.data.order?._id;
+
+      if (testOrderNumber) {
+        const fetchOrder = await api('GET', `/api/orders/${testOrderNumber}?email=sharma@example.com`);
+        assert(fetchOrder.status === 200 && fetchOrder.data.order?.orderNumber === testOrderNumber, 'GET /api/orders/:orderNumber retrieves enquiry with email verification');
+      }
     }
 
     // Contact form submission
@@ -206,6 +237,14 @@ async function runTests() {
 
     const orders = await api('GET', '/api/admin/orders', null, adminTokens.accessToken);
     assert(orders.status === 200, 'GET /api/admin/orders returns order list');
+
+    if (testOrderId) {
+      const updateStatus = await api('PUT', `/api/admin/orders/${testOrderId}/status`, {
+        status: 'quote_prepared',
+        comment: 'Official quote sent to client'
+      }, adminTokens.accessToken);
+      assert(updateStatus.status === 200 && updateStatus.data.order?.orderStatus === 'quote_prepared', 'PUT /api/admin/orders/:id/status updates status to quote_prepared');
+    }
 
     const auditLogs = await api('GET', '/api/admin/audit-logs', null, adminTokens.accessToken);
     assert(auditLogs.status === 200, 'GET /api/admin/audit-logs returns audit log history');

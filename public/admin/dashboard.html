@@ -118,10 +118,13 @@
                         <h2>Orders</h2>
                     </div>
                     <div class="panel-filters">
-                        <input type="text" id="order-search" placeholder="Search order number...">
+                        <input type="text" id="order-search" placeholder="Search order number or customer...">
                         <select id="order-status-filter">
                             <option value="">All Statuses</option>
+                            <option value="enquiry">Enquiry Received</option>
+                            <option value="quote_prepared">Quotation Prepared</option>
                             <option value="pending">Pending</option>
+                            <option value="confirmed">Confirmed</option>
                             <option value="processing">Processing</option>
                             <option value="shipped">Shipped</option>
                             <option value="delivered">Delivered</option>
@@ -130,7 +133,7 @@
                     </div>
                     <div class="table-responsive">
                         <table id="orders-table" class="admin-table">
-                            <thead><tr><th>Order #</th><th>Customer</th><th>Total</th><th>Payment</th><th>Status</th><th>Date</th></tr></thead>
+                            <thead><tr><th>Order / Enquiry #</th><th>Customer</th><th>Total</th><th>Payment</th><th>Status</th><th>Date</th><th>Action</th></tr></thead>
                             <tbody></tbody>
                         </table>
                     </div>

@@ -37,7 +37,7 @@ exports.getOrderById = asyncHandler(async (req, res, next) => {
 
 exports.updateOrderStatus = asyncHandler(async (req, res, next) => {
   const { status, comment } = req.body;
-  const validStatuses = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
+  const validStatuses = ['enquiry', 'pending', 'quote_prepared', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled', 'refunded'];
 
   if (!validStatuses.includes(status)) {
     return next(new AppError('Invalid status', 400));
@@ -49,11 +49,12 @@ exports.updateOrderStatus = asyncHandler(async (req, res, next) => {
     return next(new AppError('No order found with that ID', 404));
   }
 
-  order.status = status;
+  order.orderStatus = status;
   if (comment || status) {
     order.statusHistory.push({
       status,
-      comment: comment || `Status updated to ${status} by admin`
+      note: comment || `Status updated to ${status} by admin`,
+      updatedBy: req.admin?._id
     });
   }
 

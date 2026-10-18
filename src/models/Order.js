@@ -29,13 +29,14 @@ const orderSchema = new mongoose.Schema({
   },
   customer: {
     name: { type: String, required: true },
+    company: { type: String, default: '' },
     email: { type: String, required: true, lowercase: true },
     phone: { type: String, required: true },
     address: {
-      street: String,
-      city: String,
-      state: String,
-      pincode: { type: String, required: true },
+      street: { type: String, default: '' },
+      city: { type: String, default: '' },
+      state: { type: String, default: '' },
+      pincode: { type: String, default: '' },
       country: { type: String, default: 'India' }
     }
   },
@@ -66,11 +67,12 @@ const orderSchema = new mongoose.Schema({
   },
   paymentMethod: {
     type: String,
-    enum: ['razorpay', 'cod', 'bank_transfer']
+    enum: ['enquiry', 'quotation', 'cod', 'razorpay', 'bank_transfer', 'none'],
+    default: 'enquiry'
   },
   paymentStatus: {
     type: String,
-    enum: ['pending', 'paid', 'failed', 'refunded'],
+    enum: ['pending', 'quote_sent', 'paid', 'failed', 'refunded', 'not_applicable'],
     default: 'pending'
   },
   paymentDetails: {
@@ -80,8 +82,8 @@ const orderSchema = new mongoose.Schema({
   },
   orderStatus: {
     type: String,
-    enum: ['pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled', 'refunded'],
-    default: 'pending'
+    enum: ['enquiry', 'pending', 'quote_prepared', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled', 'refunded'],
+    default: 'enquiry'
   },
   shippingDetails: {
     trackingNumber: String,
@@ -97,6 +99,7 @@ const orderSchema = new mongoose.Schema({
     updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'Admin' }
   }],
   notes: String,
+  adminNotes: String,
   cancelReason: String
 }, {
   timestamps: true
@@ -109,12 +112,14 @@ orderSchema.index({ paymentStatus: 1 });
 orderSchema.index({ createdAt: -1 });
 
 const validTransitions = {
-  'pending': ['confirmed', 'cancelled'],
-  'confirmed': ['processing', 'cancelled'],
+  'enquiry': ['quote_prepared', 'confirmed', 'processing', 'cancelled'],
+  'pending': ['quote_prepared', 'confirmed', 'processing', 'cancelled'],
+  'quote_prepared': ['confirmed', 'processing', 'cancelled'],
+  'confirmed': ['processing', 'shipped', 'cancelled'],
   'processing': ['shipped', 'cancelled'],
-  'shipped': ['delivered'],
+  'shipped': ['delivered', 'cancelled'],
   'delivered': ['refunded'],
-  'cancelled': [],
+  'cancelled': ['enquiry', 'pending'],
   'refunded': []
 };
 

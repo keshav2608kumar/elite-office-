@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Confirmation | Elite Office Technologies</title>
+  <title>Enquiry Received | Elite Office Technologies</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,25 +13,63 @@
   <link rel="stylesheet" href="/css/components.css">
   <style>
     .confirmation-container {
-      max-width: 600px;
-      margin: 4rem auto;
+      max-width: 650px;
+      margin: 3rem auto;
       text-align: center;
       background-color: var(--color-white);
-      padding: 3rem;
+      padding: 3rem 2.5rem;
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-md);
+      border: 1px solid var(--color-border);
     }
     .success-icon {
-      font-size: 5rem;
+      width: 72px;
+      height: 72px;
+      line-height: 72px;
+      border-radius: 50%;
+      background: rgba(5, 150, 105, 0.1);
       color: var(--color-success);
-      margin-bottom: 1rem;
+      font-size: 2.5rem;
+      margin: 0 auto 1.5rem;
     }
     .order-details-box {
-      background-color: var(--color-bg);
+      background-color: #f9fafb;
       padding: 1.5rem;
       border-radius: var(--radius-md);
       margin: 2rem 0;
       text-align: left;
+      border: 1px solid var(--color-border);
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px dashed var(--color-border);
+    }
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+    .whatsapp-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background-color: #25D366;
+      color: white;
+      font-weight: 700;
+      padding: 0.9rem 1.5rem;
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      font-size: 1rem;
+      transition: var(--transition);
+      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.25);
+      margin-bottom: 1rem;
+      width: 100%;
+    }
+    .whatsapp-btn:hover {
+      background-color: #128C7E;
+      color: white;
+      transform: translateY(-2px);
     }
   </style>
 </head>
@@ -41,23 +79,55 @@
   <main class="container">
     <div class="confirmation-container">
       <div class="success-icon">✓</div>
-      <h1>Order Confirmed!</h1>
-      <p>Thank you for shopping with Elite Office Technologies.</p>
+      <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Enquiry Submitted!</h1>
+      <p style="color: var(--color-text-muted); font-size: 1.05rem;">
+        Thank you for choosing Elite Office Technologies. Your order enquiry has been received and logged in our system.
+      </p>
       
+      <div id="loading" style="margin: 2rem 0; color: var(--color-text-muted);">
+        <div class="spinner" style="margin: 0 auto 0.5rem;"></div>
+        Fetching enquiry details...
+      </div>
+
       <div class="order-details-box" id="order-box" style="display:none;">
-        <h3 style="margin-bottom: 1rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem;">Order Details</h3>
-        <p><strong>Order Number:</strong> <span id="conf-order-num"></span></p>
-        <p><strong>Status:</strong> <span id="conf-status"></span></p>
-        <p><strong>Total Amount:</strong> <span id="conf-total"></span></p>
-        <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--color-text-muted);">
-          A confirmation email has been sent to your registered email address.
+        <h3 style="margin-bottom: 1rem; border-bottom: 2px solid var(--color-border); padding-bottom: 0.5rem; color: var(--color-primary); font-size: 1.15rem;">
+          Enquiry Summary
+        </h3>
+        <div class="detail-row">
+          <span style="color:var(--color-text-muted);">Enquiry Reference:</span>
+          <strong><span id="conf-order-num"></span></strong>
+        </div>
+        <div class="detail-row">
+          <span style="color:var(--color-text-muted);">Customer:</span>
+          <span id="conf-customer" style="font-weight:500;"></span>
+        </div>
+        <div class="detail-row">
+          <span style="color:var(--color-text-muted);">Estimated Total:</span>
+          <span id="conf-total" style="font-weight:700; color:var(--color-primary);"></span>
+        </div>
+        <div class="detail-row">
+          <span style="color:var(--color-text-muted);">Current Status:</span>
+          <span class="badge badge-warning" id="conf-status" style="font-size:0.85rem;">Enquiry Received</span>
+        </div>
+
+        <div id="conf-items-list" style="margin-top: 1rem; border-top: 1px solid var(--color-border); padding-top: 0.75rem;">
+          <!-- Items rendered here -->
+        </div>
+
+        <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--color-text-muted); line-height: 1.4;">
+          ✉️ An automated confirmation email has been dispatched to your email address. An executive will follow up with official GST quotation.
         </p>
       </div>
 
-      <div id="loading" style="margin: 2rem 0;">Loading details...</div>
+      <!-- Quick WhatsApp Action -->
+      <a href="#" id="whatsapp-enquiry-btn" class="whatsapp-btn" style="display:none;" target="_blank" rel="noopener">
+        <span>💬</span> Chat on WhatsApp with Enquiry Details
+      </a>
 
-      <a href="/products.html" class="btn btn-primary">Continue Shopping</a>
-      <a href="/track-order.html" class="btn btn-outline" style="margin-left: 1rem;">Track Order</a>
+      <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-top: 0.5rem;">
+        <a href="/products.html" class="btn btn-primary" style="flex:1; min-width:180px;">Continue Shopping</a>
+        <a href="/track-order.html" id="track-link" class="btn btn-outline" style="flex:1; min-width:180px;">Track Enquiry</a>
+      </div>
     </div>
   </main>
 
@@ -69,6 +139,7 @@
   <script src="/js/cart.js"></script>
   <script src="/js/components/header.js"></script>
   <script src="/js/components/footer.js"></script>
+  <script src="/js/components/toast.js"></script>
   
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
@@ -77,24 +148,78 @@
       const email = params.get('email');
 
       if (!orderNum) {
-        document.getElementById('loading').textContent = 'Invalid order link.';
+        document.getElementById('loading').textContent = 'No enquiry reference specified.';
         return;
       }
 
+      // Update track link
+      if (email) {
+        document.getElementById('track-link').href = `/track-order.html?order=${encodeURIComponent(orderNum)}&email=${encodeURIComponent(email)}`;
+      }
+
       try {
-        let url = `/orders/${orderNum}`;
-        if(email) url += `?email=${encodeURIComponent(email)}`;
+        let url = `/orders/${encodeURIComponent(orderNum)}`;
+        if (email) url += `?email=${encodeURIComponent(email)}`;
         
-        const order = await window.api.get(url);
+        const res = await window.api.get(url);
+        const order = (res && res.data && res.data.order) ? res.data.order : (res.order || res);
         
         document.getElementById('loading').style.display = 'none';
         document.getElementById('order-box').style.display = 'block';
         
-        document.getElementById('conf-order-num').textContent = order.orderNumber;
-        document.getElementById('conf-status').textContent = order.status;
-        document.getElementById('conf-total').textContent = window.Utils.formatPrice(order.totalAmount);
+        document.getElementById('conf-order-num').textContent = order.orderNumber || orderNum;
+        document.getElementById('conf-customer').textContent = order.customer ? `${order.customer.name}${order.customer.company ? ` (${order.customer.company})` : ''}` : 'Customer';
+        
+        const total = order.totalAmount || order.total || 0;
+        document.getElementById('conf-total').textContent = window.Utils ? window.Utils.formatPrice(total) : `₹${(total/100).toFixed(2)}`;
+        
+        const statusText = order.orderStatus || order.status || 'enquiry';
+        const statusBadge = document.getElementById('conf-status');
+        if (statusText === 'enquiry') {
+          statusBadge.textContent = 'Enquiry Received - Quotation Pending';
+          statusBadge.className = 'badge badge-warning';
+        } else if (statusText === 'quote_prepared') {
+          statusBadge.textContent = 'Quotation Prepared';
+          statusBadge.className = 'badge badge-info';
+        } else if (statusText === 'confirmed') {
+          statusBadge.textContent = 'Order Confirmed';
+          statusBadge.className = 'badge badge-success';
+        } else {
+          statusBadge.textContent = statusText.toUpperCase();
+        }
+
+        // Render item names
+        if (order.items && order.items.length > 0) {
+          const itemsContainer = document.getElementById('conf-items-list');
+          itemsContainer.innerHTML = '<div style="font-weight:600; font-size:0.85rem; margin-bottom:0.4rem; color:var(--color-text-muted);">Enquired Items:</div>';
+          order.items.forEach(it => {
+            const itemRow = document.createElement('div');
+            itemRow.style.fontSize = '0.9rem';
+            itemRow.style.display = 'flex';
+            itemRow.style.justifyContent = 'space-between';
+            itemRow.style.padding = '0.2rem 0';
+            itemRow.innerHTML = `<span>${it.name || 'Product'} × ${it.quantity}</span><span>${window.Utils ? window.Utils.formatPrice(it.total || it.price * it.quantity) : ''}</span>`;
+            itemsContainer.appendChild(itemRow);
+          });
+        }
+
+        // WhatsApp action
+        try {
+          const configRes = await window.api.get('/config/public');
+          const waNum = (configRes && configRes.whatsappNumber) || '919876543210';
+          const cleanWa = waNum.replace(/[^0-9]/g, '');
+          const msg = encodeURIComponent(`Hello Elite Office Technologies! I have submitted Order Enquiry #${order.orderNumber || orderNum} for ${order.items ? order.items.length : 1} items. Please share the pro-forma quotation.`);
+          const waBtn = document.getElementById('whatsapp-enquiry-btn');
+          waBtn.href = `https://wa.me/${cleanWa}?text=${msg}`;
+          waBtn.style.display = 'inline-flex';
+        } catch (e) {}
+
       } catch (err) {
-        document.getElementById('loading').textContent = 'Order placed successfully. Failed to load details.';
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('order-box').style.display = 'block';
+        document.getElementById('conf-order-num').textContent = orderNum;
+        document.getElementById('conf-customer').textContent = 'Customer';
+        document.getElementById('conf-status').textContent = 'Enquiry Logged';
       }
     });
   </script>

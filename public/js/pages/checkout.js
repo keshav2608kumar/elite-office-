@@ -18,41 +18,66 @@ async function validateCart() {
     renderOrderSummary(data);
   } catch (error) {
     console.error('Cart validation failed', error);
-    if(window.showToast) window.showToast('Failed to validate cart prices. Please refresh.', 'error');
-    container.innerHTML = '<div style="color:red">Error loading cart. Please try again.</div>';
+    if (window.showToast) window.showToast('Could not sync current prices. Showing cart items.', 'warning');
+    
+    // Fallback to local cart items
+    const localItems = window.CartManager.getItems();
+    let subtotal = 0;
+    const items = localItems.map(item => {
+      subtotal += (item.price || 0) * (item.quantity || 1);
+      return {
+        productId: item.productId,
+        name: item.name || 'Product',
+        price: item.price || 0,
+        quantity: item.quantity || 1,
+        image: item.image || '/images/placeholder.png'
+      };
+    });
+    validatedCartData = { items, subtotal };
+    renderOrderSummary(validatedCartData);
   }
 }
 
 function renderOrderSummary(data) {
   const container = document.getElementById('checkout-items');
+  if (!container) return;
   container.innerHTML = '';
+
+  if (!data || !data.items || data.items.length === 0) {
+    container.innerHTML = '<div style="padding:1rem; text-align:center; color:var(--color-text-muted);">No items in cart</div>';
+    return;
+  }
 
   data.items.forEach(item => {
     const el = document.createElement('div');
     el.className = 'summary-item';
     
     const img = document.createElement('img');
-    img.src = window.Utils.getImageUrl(item.image);
+    img.src = window.Utils ? window.Utils.getImageUrl(item.image) : (item.image || '/images/placeholder.png');
     img.className = 'summary-item-img';
+    img.alt = item.name;
+    img.onerror = () => { img.src = '/images/placeholder.png'; };
     
     const info = document.createElement('div');
     info.className = 'summary-item-info';
     
     const title = document.createElement('div');
     title.style.fontSize = '0.9rem';
+    title.style.fontWeight = '600';
     title.textContent = item.name;
     
     const qty = document.createElement('div');
     qty.style.fontSize = '0.8rem';
     qty.style.color = 'var(--color-text-muted)';
-    qty.textContent = `Qty: ${item.quantity}`;
+    qty.textContent = `Quantity: ${item.quantity}`;
     
     info.appendChild(title);
     info.appendChild(qty);
     
     const price = document.createElement('div');
     price.className = 'summary-item-price';
-    price.textContent = window.Utils.formatPrice(item.price * item.quantity);
+    const itemTotal = (item.price || 0) * (item.quantity || 1);
+    price.textContent = window.Utils ? window.Utils.formatPrice(itemTotal) : `₹${(itemTotal/100).toFixed(2)}`;
     
     el.appendChild(img);
     el.appendChild(info);
@@ -60,112 +85,90 @@ function renderOrderSummary(data) {
     container.appendChild(el);
   });
 
-  const subtotal = data.subtotal;
+  const subtotal = data.subtotal || 0;
   const tax = Math.round(subtotal * 0.18);
   const total = subtotal + tax;
 
-  document.getElementById('co-subtotal').textContent = window.Utils.formatPrice(subtotal);
-  document.getElementById('co-tax').textContent = window.Utils.formatPrice(tax);
-  document.getElementById('co-total').textContent = window.Utils.formatPrice(total);
+  const subEl = document.getElementById('co-subtotal');
+  const taxEl = document.getElementById('co-tax');
+  const totEl = document.getElementById('co-total');
+
+  if (subEl) subEl.textContent = window.Utils ? window.Utils.formatPrice(subtotal) : `₹${(subtotal/100).toFixed(2)}`;
+  if (taxEl) taxEl.textContent = window.Utils ? window.Utils.formatPrice(tax) : `₹${(tax/100).toFixed(2)}`;
+  if (totEl) totEl.textContent = window.Utils ? window.Utils.formatPrice(total) : `₹${(total/100).toFixed(2)}`;
 }
 
 function setupForm() {
   const form = document.getElementById('checkout-form');
+  if (!form) return;
   
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    if (!form.checkValidity() || !validatedCartData) {
-      if(window.showToast) window.showToast('Please fill all required fields correctly.', 'error');
+    
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      if (window.showToast) window.showToast('Please fill all required fields correctly.', 'error');
+      return;
+    }
+
+    const cartItems = window.CartManager.getItems();
+    if (!cartItems || cartItems.length === 0) {
+      if (window.showToast) window.showToast('Your cart is empty.', 'error');
+      window.location.href = '/cart.html';
       return;
     }
 
     const btn = document.getElementById('place-order-btn');
     btn.disabled = true;
-    btn.textContent = 'Processing...';
+    btn.textContent = 'Submitting Enquiry...';
 
     const formData = new FormData(form);
     const orderPayload = {
       customer: {
-        firstName: formData.get('firstName'),
-        lastName: formData.get('lastName'),
-        email: formData.get('email'),
-        phone: formData.get('phone'),
+        name: formData.get('name').trim(),
+        company: (formData.get('company') || '').trim(),
+        email: formData.get('email').trim().toLowerCase(),
+        phone: formData.get('phone').trim(),
         address: {
-          street: formData.get('address'),
-          city: formData.get('city'),
-          state: formData.get('state'),
-          pincode: formData.get('pincode')
+          street: formData.get('address').trim(),
+          city: formData.get('city').trim(),
+          state: formData.get('state').trim(),
+          pincode: formData.get('pincode').trim()
         }
       },
-      items: window.CartManager.getItems().map(i => ({ productId: i.productId, quantity: i.quantity })),
-      paymentMethod: formData.get('paymentMethod')
+      items: cartItems.map(i => ({ 
+        productId: i.productId, 
+        quantity: i.quantity 
+      })),
+      notes: (formData.get('notes') || '').trim(),
+      paymentMethod: 'enquiry'
     };
 
     try {
       const orderRes = await window.api.post('/orders', orderPayload);
-      
-      if (orderPayload.paymentMethod === 'razorpay') {
-        await processRazorpay(orderRes);
-      } else {
-        // COD
-        window.CartManager.clear();
-        window.location.href = `/order-confirmation.html?order=${orderRes.orderNumber}&email=${encodeURIComponent(orderPayload.customer.email)}`;
+      const order = (orderRes && orderRes.data && orderRes.data.order) ? orderRes.data.order : (orderRes.order || orderRes);
+
+      if (window.showToast) {
+        window.showToast('Enquiry submitted successfully! Redirecting...', 'success');
       }
+
+      // Clear the local cart
+      window.CartManager.clear();
+
+      // Redirect to confirmation
+      const orderNum = order.orderNumber || 'EOT-ORDER';
+      const emailParam = encodeURIComponent(orderPayload.customer.email);
+      setTimeout(() => {
+        window.location.href = `/order-confirmation.html?order=${encodeURIComponent(orderNum)}&email=${emailParam}`;
+      }, 500);
+
     } catch (error) {
-      console.error(error);
-      if(window.showToast) window.showToast(error.message || 'Failed to place order', 'error');
+      console.error('Enquiry submission error:', error);
+      if (window.showToast) {
+        window.showToast(error.message || 'Failed to submit enquiry. Please try again.', 'error');
+      }
       btn.disabled = false;
-      btn.textContent = 'Place Order';
+      btn.textContent = '📩 Submit Order Enquiry & Request Quote';
     }
   });
-}
-
-async function processRazorpay(order) {
-  try {
-    const rpOrder = await window.api.post('/payments/create-order', { orderId: order._id });
-    
-    const options = {
-      key: "YOUR_RAZORPAY_KEY", // Should ideally be fetched from backend config
-      amount: rpOrder.amount,
-      currency: rpOrder.currency,
-      name: "Elite Office Technologies",
-      description: `Order ${order.orderNumber}`,
-      order_id: rpOrder.id,
-      handler: async function (response) {
-        try {
-          await window.api.post('/payments/verify', {
-            razorpay_order_id: response.razorpay_order_id,
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_signature: response.razorpay_signature
-          });
-          window.CartManager.clear();
-          window.location.href = `/order-confirmation.html?order=${order.orderNumber}&email=${encodeURIComponent(order.customer.email)}`;
-        } catch (err) {
-          if(window.showToast) window.showToast('Payment verification failed. Please contact support.', 'error');
-          document.getElementById('place-order-btn').disabled = false;
-          document.getElementById('place-order-btn').textContent = 'Try Again';
-        }
-      },
-      prefill: {
-        name: `${order.customer.firstName} ${order.customer.lastName}`,
-        email: order.customer.email,
-        contact: order.customer.phone
-      },
-      theme: {
-        color: "#0a1628"
-      }
-    };
-    
-    const rzp = new Razorpay(options);
-    rzp.on('payment.failed', function (response){
-      if(window.showToast) window.showToast('Payment failed. Please try again.', 'error');
-      document.getElementById('place-order-btn').disabled = false;
-      document.getElementById('place-order-btn').textContent = 'Place Order';
-    });
-    rzp.open();
-  } catch (error) {
-    if(window.showToast) window.showToast('Failed to initiate payment', 'error');
-    document.getElementById('place-order-btn').disabled = false;
-    document.getElementById('place-order-btn').textContent = 'Place Order';
-  }
 }

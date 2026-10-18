@@ -1,39 +1,46 @@
-const { body } = require('express-validator');
+const { body, query } = require('express-validator');
 const mongoose = require('mongoose');
 
 const createOrder = [
   body('customer.name')
     .trim()
-    .notEmpty().withMessage('Customer name is required'),
+    .notEmpty().withMessage('Contact name is required'),
   body('customer.email')
     .trim()
-    .notEmpty().withMessage('Customer email is required')
-    .isEmail().withMessage('Please provide a valid email'),
+    .notEmpty().withMessage('Email address is required')
+    .isEmail().withMessage('Please provide a valid email address'),
   body('customer.phone')
     .trim()
-    .notEmpty().withMessage('Customer phone is required')
-    .isLength({ min: 10, max: 15 }).withMessage('Phone must be at least 10 digits')
-    .matches(/^[0-9]+$/).withMessage('Phone must contain only numbers'),
+    .notEmpty().withMessage('Phone number is required')
+    .isLength({ min: 10, max: 15 }).withMessage('Phone number must be at least 10 digits')
+    .matches(/^[0-9+\s-]+$/).withMessage('Please provide a valid phone number'),
   body('customer.address.pincode')
+    .optional({ checkFalsy: true })
     .trim()
-    .notEmpty().withMessage('Pincode is required')
-    .isLength({ min: 6, max: 6 }).withMessage('Pincode must be exactly 6 digits')
-    .matches(/^[0-9]+$/).withMessage('Pincode must contain only numbers'),
+    .isLength({ min: 4, max: 10 }).withMessage('Pincode must be valid'),
   body('items')
-    .isArray({ min: 1 }).withMessage('Order must contain at least one item'),
-  body('items.*.product')
-    .notEmpty().withMessage('Product ID is required')
-    .custom((value) => {
-      if (!mongoose.Types.ObjectId.isValid(value)) {
-        throw new Error('Invalid product ID');
+    .isArray({ min: 1 }).withMessage('Enquiry must contain at least one item'),
+  body('items.*')
+    .custom((item) => {
+      const id = item.productId || item.product;
+      if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+        throw new Error('Valid product ID is required');
+      }
+      const qty = parseInt(item.quantity, 10);
+      if (!qty || qty < 1) {
+        throw new Error('Quantity must be at least 1');
       }
       return true;
-    }),
-  body('items.*.quantity')
-    .notEmpty().withMessage('Quantity is required')
-    .isInt({ min: 1, max: 100 }).withMessage('Quantity must be between 1 and 100')
+    })
+];
+
+const getOrder = [
+  query('email')
+    .optional({ checkFalsy: true })
+    .isEmail().withMessage('Valid email query parameter is required')
 ];
 
 module.exports = {
-  createOrder
+  createOrder,
+  getOrder
 };

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout | Elite Office Technologies</title>
+  <title>Request a Quotation / Order Enquiry | Elite Office Technologies</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,114 +17,133 @@
   <site-header></site-header>
 
   <main class="container">
-    <h1 style="margin-top: 2rem;">Checkout</h1>
+    <div style="margin: 2rem 0 1rem;">
+      <div style="display:inline-block; background:rgba(201,168,76,0.15); color:var(--color-primary); font-size:0.8rem; font-weight:700; padding:0.25rem 0.75rem; border-radius:999px; margin-bottom:0.5rem; text-transform:uppercase; letter-spacing:0.5px;">
+        Direct Enquiry • No Upfront Payment
+      </div>
+      <h1 style="margin:0; font-size:2.2rem;">Order Enquiry & Quotation Request</h1>
+      <p style="color:var(--color-text-muted); margin-top:0.5rem; max-width:750px;">
+        Submit your office technology requirements. Our corporate sales team will review stock, apply volume pricing, and send you an official quotation with tax invoice.
+      </p>
+    </div>
 
     <div class="checkout-layout">
       <div class="checkout-forms">
         <form id="checkout-form">
+          <!-- Contact Information -->
           <div class="checkout-section">
-            <h2>Contact Information</h2>
+            <h2>1. Contact & Business Details</h2>
             <div class="form-row">
               <div class="form-group">
-                <label class="form-label" for="firstName">First Name</label>
-                <input type="text" id="firstName" name="firstName" class="form-control" required>
-                <div class="error-text">First name is required</div>
+                <label class="form-label" for="name">Contact Person / Full Name <span style="color:red;">*</span></label>
+                <input type="text" id="name" name="name" class="form-control" placeholder="e.g. Rahul Sharma" required>
+                <div class="error-text">Contact name is required</div>
               </div>
               <div class="form-group">
-                <label class="form-label" for="lastName">Last Name</label>
-                <input type="text" id="lastName" name="lastName" class="form-control" required>
-                <div class="error-text">Last name is required</div>
+                <label class="form-label" for="company">Company / Organization (Optional)</label>
+                <input type="text" id="company" name="company" class="form-control" placeholder="e.g. Apex Infotech Pvt Ltd">
               </div>
             </div>
             <div class="form-row">
               <div class="form-group">
-                <label class="form-label" for="email">Email</label>
-                <input type="email" id="email" name="email" class="form-control" required>
-                <div class="error-text">Valid email is required</div>
+                <label class="form-label" for="email">Email Address <span style="color:red;">*</span></label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="name@company.com" required>
+                <div class="error-text">Valid email is required for sending the quotation</div>
               </div>
               <div class="form-group">
-                <label class="form-label" for="phone">Phone Number</label>
-                <input type="tel" id="phone" name="phone" class="form-control" pattern="[0-9]{10}" title="10 digit mobile number" required>
-                <div class="error-text">Valid 10-digit phone number is required</div>
+                <label class="form-label" for="phone">Phone / WhatsApp Number <span style="color:red;">*</span></label>
+                <input type="tel" id="phone" name="phone" class="form-control" pattern="[0-9+\s-]{10,15}" placeholder="10-digit mobile number" required>
+                <div class="error-text">Valid phone number is required</div>
               </div>
             </div>
           </div>
 
+          <!-- Shipping / Delivery Address -->
           <div class="checkout-section">
-            <h2>Shipping Address</h2>
+            <h2>2. Office / Delivery Location</h2>
             <div class="form-group">
-              <label class="form-label" for="address">Street Address</label>
-              <input type="text" id="address" name="address" class="form-control" required>
+              <label class="form-label" for="address">Street / Building Address <span style="color:red;">*</span></label>
+              <input type="text" id="address" name="address" class="form-control" placeholder="Plot No. / Floor / Building / Street" required>
             </div>
             <div class="form-row">
               <div class="form-group">
-                <label class="form-label" for="city">City</label>
-                <input type="text" id="city" name="city" class="form-control" required>
+                <label class="form-label" for="city">City <span style="color:red;">*</span></label>
+                <input type="text" id="city" name="city" class="form-control" placeholder="e.g. New Delhi" required>
               </div>
               <div class="form-group">
-                <label class="form-label" for="state">State</label>
-                <input type="text" id="state" name="state" class="form-control" required>
+                <label class="form-label" for="state">State <span style="color:red;">*</span></label>
+                <input type="text" id="state" name="state" class="form-control" placeholder="e.g. Delhi" required>
               </div>
               <div class="form-group">
-                <label class="form-label" for="pincode">Pincode</label>
-                <input type="text" id="pincode" name="pincode" class="form-control" pattern="[0-9]{6}" required>
+                <label class="form-label" for="pincode">Pincode <span style="color:red;">*</span></label>
+                <input type="text" id="pincode" name="pincode" class="form-control" placeholder="6-digit PIN code" required>
               </div>
             </div>
           </div>
 
+          <!-- Special Instructions & Notes -->
           <div class="checkout-section">
-            <h2>Payment Method</h2>
-            <div class="payment-methods">
-              <label class="payment-method">
-                <input type="radio" name="paymentMethod" value="razorpay" checked>
-                <div>
-                  <strong>Pay Online</strong>
-                  <div style="font-size:0.875rem; color:var(--color-text-muted);">Credit/Debit Card, NetBanking, UPI</div>
-                </div>
-              </label>
-              <label class="payment-method">
-                <input type="radio" name="paymentMethod" value="cod">
-                <div>
-                  <strong>Cash on Delivery (COD)</strong>
-                  <div style="font-size:0.875rem; color:var(--color-text-muted);">Pay when you receive the order</div>
-                </div>
-              </label>
+            <h2>3. Requirement Notes & Instructions (Optional)</h2>
+            <div class="form-group">
+              <label class="form-label" for="notes">Special Requirements, Delivery Schedule, or GSTIN</label>
+              <textarea id="notes" name="notes" class="form-control" rows="3" placeholder="Provide any specifications, required delivery timeline, GST number for invoice, or bulk purchase details..."></textarea>
             </div>
           </div>
 
-          <button type="submit" class="btn btn-primary" id="place-order-btn" style="width:100%; font-size:1.1rem; padding:1rem;">Place Order</button>
+          <!-- Quotation Guarantee Box -->
+          <div class="checkout-section" style="border: 1px solid var(--color-border); background: #fdfcf9;">
+            <div style="display:flex; gap:1rem; align-items:flex-start;">
+              <div style="font-size:2rem; line-height:1;">📋</div>
+              <div>
+                <strong style="color:var(--color-primary); font-size:1.05rem; display:block; margin-bottom:0.25rem;">
+                  100% Free Enquiry • No Payment Required Now
+                </strong>
+                <p style="margin:0; font-size:0.9rem; color:var(--color-text-muted); line-height:1.5;">
+                  Your order is submitted as an official quotation request. We do not ask for online transactions or card details. You will receive an instant acknowledgement and can connect directly with our sales team via WhatsApp for custom billing.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="place-order-btn" style="width:100%; font-size:1.15rem; padding:1.1rem; font-weight:700; border-radius:var(--radius-md);">
+            📩 Submit Order Enquiry & Request Quote
+          </button>
         </form>
       </div>
 
+      <!-- Sidebar Order Summary -->
       <aside class="order-summary-sidebar">
-        <h3 style="margin-bottom: 1rem;">Order Summary</h3>
+        <h3 style="margin-bottom: 1rem; border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem;">Enquiry Items</h3>
+        
         <div id="checkout-items">
-          <!-- Populated by JS -->
-          <div style="text-align:center;">Loading cart...</div>
+          <div style="text-align:center; padding: 2rem 0; color:var(--color-text-muted);">
+            <div class="spinner" style="margin: 0 auto 0.5rem;"></div>
+            Loading cart items...
+          </div>
         </div>
         
-        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--color-border);">
+        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--color-border);">
           <div style="display:flex; justify-content:space-between; margin-bottom: 0.5rem;">
-            <span>Subtotal</span>
-            <span id="co-subtotal">₹0.00</span>
+            <span style="color:var(--color-text-muted);">Subtotal</span>
+            <span id="co-subtotal" style="font-weight:600;">₹0.00</span>
           </div>
           <div style="display:flex; justify-content:space-between; margin-bottom: 0.5rem;">
-            <span>Tax (18% GST)</span>
-            <span id="co-tax">₹0.00</span>
+            <span style="color:var(--color-text-muted);">Tax (18% GST Estimated)</span>
+            <span id="co-tax" style="font-weight:600;">₹0.00</span>
           </div>
-          <div style="display:flex; justify-content:space-between; font-weight:700; font-size:1.2rem; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--color-border);">
-            <span>Total</span>
+          <div style="display:flex; justify-content:space-between; font-weight:700; font-size:1.25rem; margin-top: 1rem; padding-top: 1rem; border-top: 2px solid var(--color-border); color:var(--color-primary);">
+            <span>Estimated Total</span>
             <span id="co-total">₹0.00</span>
           </div>
+          <p style="margin-top: 1rem; font-size:0.8rem; color:var(--color-text-muted); line-height:1.4;">
+            * Note: Final quote will include exact transport/delivery charges and applicable corporate volume discounts.
+          </p>
         </div>
       </aside>
     </div>
   </main>
 
   <site-footer></site-footer>
-
-  <!-- Razorpay -->
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
   <!-- Shared JS -->
   <script src="/js/config.js"></script>

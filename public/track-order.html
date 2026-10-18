@@ -61,34 +61,59 @@
   <script src="/js/components/toast.js"></script>
 
   <script>
-    document.getElementById('trackForm').addEventListener('submit', async (e) => {
+    const form = document.getElementById('trackForm');
+    
+    // Auto-fill from URL params if available
+    window.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const orderParam = params.get('order');
+      const emailParam = params.get('email');
+      if (orderParam) form.orderNumber.value = orderParam;
+      if (emailParam) form.email.value = emailParam;
+      if (orderParam && emailParam) {
+        form.dispatchEvent(new Event('submit'));
+      }
+    });
+
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = document.getElementById('track-btn');
       btn.disabled = true;
       btn.textContent = 'Searching...';
       
-      const orderNumber = e.target.orderNumber.value.trim();
-      const email = e.target.email.value.trim();
+      const orderNumber = form.orderNumber.value.trim();
+      const email = form.email.value.trim();
       
       try {
-        const order = await window.api.get(`/orders/${orderNumber}?email=${encodeURIComponent(email)}`);
+        const res = await window.api.get(`/orders/${encodeURIComponent(orderNumber)}?email=${encodeURIComponent(email)}`);
+        const order = (res && res.data && res.data.order) ? res.data.order : (res.order || res);
         
         document.getElementById('result-container').style.display = 'block';
-        document.getElementById('r-order').textContent = order.orderNumber;
-        document.getElementById('r-date').textContent = window.Utils.formatDate(order.createdAt);
-        document.getElementById('r-total').textContent = window.Utils.formatPrice(order.totalAmount);
+        document.getElementById('r-order').textContent = order.orderNumber || orderNumber;
+        document.getElementById('r-date').textContent = window.Utils ? window.Utils.formatDate(order.createdAt) : new Date(order.createdAt).toLocaleDateString();
+        const total = order.totalAmount || order.total || 0;
+        document.getElementById('r-total').textContent = window.Utils ? window.Utils.formatPrice(total) : `₹${(total/100).toFixed(2)}`;
         
         const timeline = document.getElementById('timeline');
         timeline.innerHTML = '';
         
+        const rawStatus = order.orderStatus || order.status || 'enquiry';
+        let statusTitle = 'Enquiry Received - Quotation Under Review';
+        if (rawStatus === 'quote_prepared') statusTitle = 'Quotation Prepared & Sent';
+        else if (rawStatus === 'confirmed') statusTitle = 'Order Confirmed';
+        else if (rawStatus === 'processing') statusTitle = 'Processing & Packing';
+        else if (rawStatus === 'shipped') statusTitle = 'Dispatched / In Transit';
+        else if (rawStatus === 'delivered') statusTitle = 'Delivered';
+        else if (rawStatus === 'cancelled') statusTitle = 'Cancelled';
+        
         const item = document.createElement('div');
         item.className = 'timeline-item';
-        item.innerHTML = `<strong>Current Status: ${order.status}</strong><br><span style="font-size:0.875rem; color:var(--color-text-muted);">Updated on ${window.Utils.formatDate(order.updatedAt)}</span>`;
+        item.innerHTML = `<strong>Current Status: ${statusTitle}</strong><br><span style="font-size:0.875rem; color:var(--color-text-muted);">Updated on ${window.Utils ? window.Utils.formatDate(order.updatedAt || order.createdAt) : new Date().toLocaleDateString()}</span>`;
         timeline.appendChild(item);
         
       } catch (err) {
         document.getElementById('result-container').style.display = 'none';
-        window.showToast(err.message || 'Order not found', 'error');
+        window.showToast(err.message || 'Order enquiry not found. Please verify details.', 'error');
       } finally {
         btn.disabled = false;
         btn.textContent = 'Track Order';
