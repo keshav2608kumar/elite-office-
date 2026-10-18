@@ -221,8 +221,8 @@ async function startServer() {
       console.log(`   URL: http://localhost:${PORT}`);
     });
 
-    // Optional HTTPS server if certificates exist
-    let httpsServer = null;
+    // HTTPS servers if certificates exist
+    const httpsServers = [];
     const sslKeyPath = process.env.SSL_KEY_PATH || path.join(__dirname, 'ssl', 'key.pem');
     const sslCertPath = process.env.SSL_CERT_PATH || path.join(__dirname, 'ssl', 'cert.pem');
 
@@ -232,10 +232,27 @@ async function startServer() {
           key: fs.readFileSync(sslKeyPath),
           cert: fs.readFileSync(sslCertPath)
         };
-        const HTTPS_PORT = parseInt(process.env.HTTPS_PORT, 10) || 5443;
-        httpsServer = https.createServer(httpsOptions, app).listen(HTTPS_PORT, () => {
-          console.log(`   HTTPS: https://localhost:${HTTPS_PORT}\n`);
+
+        // Standard HTTPS on port 443
+        try {
+          const server443 = https.createServer(httpsOptions, app);
+          server443.listen(443, () => {
+            console.log(`   HTTPS (Standard): https://localhost`);
+          });
+          server443.on('error', (err) => {
+            console.warn(`   Note: Port 443 not bound (${err.message})`);
+          });
+          httpsServers.push(server443);
+        } catch (e) {}
+
+        // Dedicated dev HTTPS port 5443
+        const server5443 = https.createServer(httpsOptions, app);
+        server5443.listen(5443, () => {
+          console.log(`   HTTPS (Port 5443): https://localhost:5443\n`);
         });
+        server5443.on('error', () => {});
+        httpsServers.push(server5443);
+
       } catch (sslErr) {
         console.warn(`⚠️ Failed to start HTTPS server: ${sslErr.message}`);
       }
@@ -246,7 +263,9 @@ async function startServer() {
     // Graceful shutdown
     const shutdown = async (signal) => {
       console.log(`\n${signal} received. Shutting down gracefully...`);
-      if (httpsServer) httpsServer.close();
+      httpsServers.forEach(s => {
+        try { s.close(); } catch (e) {}
+      });
       server.close(async () => {
         try {
           await mongoose.connection.close();
